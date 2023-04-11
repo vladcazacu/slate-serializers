@@ -95,7 +95,7 @@ const slateNodeToHtml = (node: any, config = defaultConfig, isLastNodeInDocument
     }
   }
 
-  let element: Element | null = null
+  let element: Element | Text | null = null
 
   // more complex transforms
   if (config.elementTransforms[node.type]) {
