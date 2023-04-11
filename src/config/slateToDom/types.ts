@@ -1,19 +1,23 @@
 import { ChildNode, Element, Text } from 'domhandler'
 
+export type ElementTagTransformFunction = ({
+  node,
+  attribs,
+  children,
+}: {
+  node?: any
+  attribs?: { [key: string]: string }
+  children?: ChildNode[]
+}) => Element
+
 interface ElementTagTransform {
-  [key: string]: ({
-    node,
-    attribs,
-    children,
-  }: {
-    node?: any
-    attribs?: { [key: string]: string }
-    children?: ChildNode[]
-  }) => Element
+  [key: string]: ElementTagTransformFunction
 }
 
+export type MarkTransformFunction = (params: { node: any; textChildren?: any }) => (Element | Text)[]
+
 interface MarkTransform {
-  [key: string]: (params: { node: any; textChildren?: any }) => (Element | Text)[]
+  [key: string]: MarkTransformFunction
 }
 
 export interface Config {
