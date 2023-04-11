@@ -8,7 +8,6 @@ import { config as defaultConfig } from '../../config/slateToDom/default'
 import { nestedMarkElements } from '../../utilities/domhandler'
 import { getNested, isEmptyObject, styleToString } from '../../utilities'
 import { SlateToDomConfig } from '../..'
-import { isBlock } from '../blocks'
 
 type SlateToHtml = (node: any[], config?: SlateToDomConfig) => string
 type SlateToDom = (node: any[], config?: SlateToDomConfig) => AnyNode | ArrayLike<AnyNode>
@@ -34,10 +33,11 @@ const slateNodeToHtml = (node: any, config = defaultConfig, isLastNodeInDocument
 
     // convert line breaks to br tags
     const strLines = config.convertLineBreakToBr ? str.split('\n') : [str]
-    const textChildren: (Element | Text)[] = []
+    let textChildren: (Element | Text)[] = []
 
     strLines.forEach((line, index) => {
       const markElements: string[] = []
+
       Object.keys(config.markMap).forEach((key) => {
         if ((node as any)[key]) {
           markElements.push(...config.markMap[key])
@@ -61,6 +61,14 @@ const slateNodeToHtml = (node: any, config = defaultConfig, isLastNodeInDocument
         textChildren.push(new Element('br', {}))
       }
     })
+
+    if (config.markTransforms) {
+      Object.keys(config.markTransforms).forEach((key) => {
+        if ((node as any)[key] && config.markTransforms) {
+          textChildren = config.markTransforms[key]({ node, textChildren })
+        }
+      })
+    }
 
     return new Document(textChildren)
   }

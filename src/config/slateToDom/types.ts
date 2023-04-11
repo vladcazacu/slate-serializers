@@ -1,4 +1,4 @@
-import { ChildNode, Element } from 'domhandler'
+import { ChildNode, Element, Text } from 'domhandler'
 
 interface ElementTagTransform {
   [key: string]: ({
@@ -12,8 +12,13 @@ interface ElementTagTransform {
   }) => Element
 }
 
+interface MarkTransform {
+  [key: string]: (params: { node: any; textChildren?: any }) => (Element | Text)[]
+}
+
 export interface Config {
   markMap: { [key: string]: string[] }
+  markTransforms?: MarkTransform
   elementMap: { [key: string]: string }
   elementStyleMap?: {
     [key: string]: string

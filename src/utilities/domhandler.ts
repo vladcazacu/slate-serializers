@@ -15,36 +15,15 @@ export const nestedMarkElementsString = (els: string[], text: string) => {
   return serializer(nestedMarkElements(els, new Text(text)))
 }
 
-export const nestedMarkElements = (els: string[], element: Element | Text) => {
+export const nestedMarkElements = (els: string[], element: Element | Text): Element | Text => {
   if (els.length === 0) {
     return element
   }
-  const el1 = els.pop()
-  element = new Element(el1 as string, {}, [element])
-  if (!els || els.length === 0) {
-    return element
-  }
-  const el2 = els.pop()
-  element = new Element(el2 as string, {}, [element])
-  if (!els || els.length === 0) {
-    return element
-  }
-  const el3 = els.pop()
-  element = new Element(el3 as string, {}, [element])
-  if (!els || els.length === 0) {
-    return element
-  }
-  const el4 = els.pop()
-  element = new Element(el4 as string, {}, [element])
-  if (!els || els.length === 0) {
-    return element
-  }
-  const el5 = els.pop()
-  element = new Element(el5 as string, {}, [element])
-  if (!els || els.length === 0) {
-    return element
-  }
-  return element
+
+  const el = els.pop() as string
+  const newElement = new Element(el, {}, [element])
+
+  return nestedMarkElements(els, newElement)
 }
 
 /**
