@@ -8,7 +8,7 @@ export type ElementTagTransformFunction = ({
   node?: any
   attribs?: { [key: string]: string }
   children?: ChildNode[]
-}) => Element
+}) => Element | Text
 
 interface ElementTagTransform {
   [key: string]: ElementTagTransformFunction
